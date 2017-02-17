@@ -21,17 +21,10 @@ import java.util.List;
 
 public class CardsAPI {
 
-    // https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1
-
-
-
-    public Card drawCard(Context context, final Deck deck){
-
-        final Card newCard = new Card();
+    public void drawCard(Context context, final Deck deck, final Card card){
 
         String newCardURL = "https://deckofcardsapi.com/api/deck/" + deck.getId() + "/draw/?count=1";
         RequestQueue queue = Volley.newRequestQueue(context);
-
         StringRequest request = new StringRequest(newCardURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -39,8 +32,12 @@ public class CardsAPI {
                 Gson gson = new GsonBuilder().create();
 
                 CardResponseEntity cardResponse = gson.fromJson(reader, CardResponseEntity.class);
-                CardResultsEntity cardResultsEntity = cardResponse.getCard();
-                newCard.setImage(cardResultsEntity.getImage());
+
+                List<CardResultsEntity> cardResultsEntity = cardResponse.getCard();
+                for (CardResultsEntity result: cardResultsEntity) {
+                    card.setImage(result.getImage());
+                }
+                deck.setRemaining(cardResponse.getRemaining());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -49,7 +46,6 @@ public class CardsAPI {
             }
         });
         queue.add(request);
-        return newCard;
     }
 
 
@@ -69,11 +65,12 @@ public class CardsAPI {
                 CardResponseEntity cardResponse = gson.fromJson(reader, CardResponseEntity.class);
                 deck.setId(cardResponse.getDeckId());
                 deck.setRemaining(cardResponse.getRemaining());
+
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         });
         queue.add(request);

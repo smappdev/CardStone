@@ -2,6 +2,8 @@ package com.saul.cardstone.model.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by Saul on 17/02/2017.
  */
@@ -10,7 +12,7 @@ public class CardResponseEntity {
     @SerializedName("success") String success;
     @SerializedName("deck_id") String deckId;
     @SerializedName("remaining") int remaining;
-    @SerializedName("cards") CardResultsEntity card;
+    @SerializedName("cards") List<CardResultsEntity> card;
 
     public String getSuccess() {
         return success;
@@ -36,11 +38,11 @@ public class CardResponseEntity {
         this.remaining = remaining;
     }
 
-    public CardResultsEntity getCard() {
+    public List<CardResultsEntity> getCard() {
         return card;
     }
 
-    public void setCard(CardResultsEntity card) {
+    public void setCard(List<CardResultsEntity> card) {
         this.card = card;
     }
 }
