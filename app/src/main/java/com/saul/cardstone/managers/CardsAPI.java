@@ -25,8 +25,31 @@ public class CardsAPI {
 
 
 
-    public void drawCard(Context context, final Deck deck){
+    public Card drawCard(Context context, final Deck deck){
 
+        final Card newCard = new Card();
+
+        String newCardURL = "https://deckofcardsapi.com/api/deck/" + deck.getId() + "/draw/?count=1";
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        StringRequest request = new StringRequest(newCardURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Reader reader = new StringReader(response);
+                Gson gson = new GsonBuilder().create();
+
+                CardResponseEntity cardResponse = gson.fromJson(reader, CardResponseEntity.class);
+                CardResultsEntity cardResultsEntity = cardResponse.getCard();
+                newCard.setImage(cardResultsEntity.getImage());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(request);
+        return newCard;
     }
 
 
@@ -45,6 +68,7 @@ public class CardsAPI {
 
                 CardResponseEntity cardResponse = gson.fromJson(reader, CardResponseEntity.class);
                 deck.setId(cardResponse.getDeckId());
+                deck.setRemaining(cardResponse.getRemaining());
             }
         }, new Response.ErrorListener() {
             @Override

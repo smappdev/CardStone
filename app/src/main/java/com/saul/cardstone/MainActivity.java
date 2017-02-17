@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 cardsAPI.newDeck(view.getContext(), deck);
-                System.out.println(deck.getId());
+                remainingTextView.setText("Remaining: " + deck.getRemaining());
             }
         });
     }
