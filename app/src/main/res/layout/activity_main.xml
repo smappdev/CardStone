@@ -10,12 +10,14 @@
 
 
     <ImageView
+        android:id="@+id/activity_main___card_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/back"
         android:layout_margin="20dp"/>
 
     <TextView
+        android:id="@+id/activity_main___remaining_text_view"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="#c3ce1f1f"
